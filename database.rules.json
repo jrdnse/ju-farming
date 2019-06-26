@@ -1,0 +1,24 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+        "money": {
+          ".validate": "newData.isNumber() && newData.val() <= (data.val() + 40 )"
+        }
+      }
+    },
+    "leaderboard": {
+      ".read": true,
+      "$uid": {
+        ".read": true,
+        ".write": "$uid === auth.uid",
+        "money": {
+          ".validate": "newData.isNumber() && newData.val() === root.child('users').child(auth.uid).child('money').val()"
+        },
+        "nickname": {}
+      }
+    }
+  }
+}

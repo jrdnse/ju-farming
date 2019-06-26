@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JUFarming</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase-database.js"></script>
+    <script src="init.js" type="module"></script>
+    <script src="main.js" type="module"></script>
+    <style>
+      body {
+        background-color: #f0f0f0 !important;
+      }
+
+      #menu {
+        margin: auto;
+        width: 800px;
+      }
+
+      #logo {
+        width: 150px;
+        height: auto;
+      }
+
+      #game-container {
+        min-width: 100vw;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding-bottom: 150px;
+      }
+
+      #game-container > canvas {
+        border-radius: 5px;
+        /* margin-top: -100px; */
+      }
+
+      .scoreboard {
+        width: 300px;
+        position: absolute;
+        z-index: 100;
+        right: 0%;
+        top: 10%;
+      }
+
+      .scoreboard h3{
+        text-align: center;
+      }
+      ol { 
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+li {
+    flex: 0 0 auto;
+}
+    </style>
+  </head>
+
+  <body>
+    <div id="menu">
+      <div class="d-flex flex-row text-black align-items-end">
+        <div class="p-2 mr-auto">
+          <a href="#">
+            <img id="logo" src="logo.png" alt="JUFarming Logotype" />
+          </a>
+        </div>
+        <div class="p-2">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#registerModal"
+          >
+            Register
+          </button>
+          <div
+            class="modal fade"
+            id="registerModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="registerModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h5 id="rgrText"></h5>
+                  <form>
+                    <div class="form-group">
+                      <div class="form-group">
+                        <label for="password">Nickname:</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Nickname"
+                          aria-label="Nickname"
+                          id="nickname"
+                        />
+                      </div>
+                      <label for="email">Email:</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Email"
+                        aria-label="Email"
+                        aria-describedby="basic-addon1"
+                        id="email"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="password">Password:</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        placeholder="Password"
+                        aria-label="Password"
+                        id="password"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="password">Select your school:</label>
+                      <select class="form-control" id="school">
+                        <option selected>JTH</option>
+                        <option>JIBS</option>
+                        <option>HLKRed</option>
+                        <option>HLKBlue</option>
+                        <option>Hälso</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="registerbtn"
+                  >
+                    Register
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-2">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#loginModal"
+          >
+            Login
+          </button>
+          <div
+            class="modal fade"
+            id="loginModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="loginModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h5 id="lgnTxt"></h5>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">@</span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Email"
+                      aria-label="Email"
+                      aria-describedby="basic-addon1"
+                      id="emaillgn"
+                    />
+                    <input
+                      type="password"
+                      class="form-control"
+                      placeholder="Password"
+                      aria-label="Password"
+                      id="passwordlgn"
+                    />
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary" id="loginbtn">
+                    Login
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-2">
+          <button type="button" class="btn btn-primary" id="signoutbtn">
+            Sign out
+          </button>
+        </div>
+        <div class="p-2">
+          <button
+            type="button"
+            class="btn btn-warning"
+            data-toggle="modal"
+            data-target="#infoModal"
+          >
+            Info
+          </button>
+          <div
+            class="modal fade"
+            id="infoModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="loginModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="loginModalLabel">Rules for the game!</h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  
+                  <h5>Instructions! </h5>
+                  <br><p>Move around with the arrow keys.
+Change your tools from the number keys (1 - 4).<br>
+The goal of the game is to have a thriving economy build up from your plantation. Hoe the ground, plant and water the seeds. Go to bed and wait a day. Harvest and your products and cash in. Repeat on the next day. Be careful not to run out of money or to go to sleep without watering the crops!<br>Keep on living in this sad capitalist reality until the end of your days.
+                  </p>
+
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="main-container">
+      <div id="game-container"></div>
+      <div class="scoreboard">
+        <h3>Scoreboard</h3>
+        <ol reversed id="scoreboardOl">
+        </ol>
+      </div>
+    </div>
+  </body>
+</html>
